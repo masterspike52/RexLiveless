@@ -180,6 +180,9 @@ struct Row {
   ImTextureID picture = 0;
   float picture_aspect = 0.0f;
   float picture_height = 0.0f;
+  // A progress bar under the label (Menu::Progress): how much is filled, below
+  // 0 when that isn't known.
+  std::optional<float> progress;
   // Buttons side by side (Menu::Bar), and the one chosen.
   std::vector<std::string> bar;
   std::function<void(int)> bar_chosen;
@@ -187,7 +190,7 @@ struct Row {
   std::shared_ptr<const RowLists> lists;
   std::function<void(ListsDone)> lists_done;
   bool Inner() const { return !bar.empty() || lists; }
-  bool Selectable() const { return !header && text.empty() && picture_aspect <= 0.0f; }
+  bool Selectable() const { return !header && text.empty() && picture_aspect <= 0.0f && !progress; }
 };
 
 // Where the mouse can act inside a Bar or Lists row, as last drawn.

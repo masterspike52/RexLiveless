@@ -443,6 +443,12 @@ void Menu::Image(rex::ui::ImmediateTexture* texture, float aspect, float max_hei
                      .picture_height = max_height});
 }
 
+void Menu::Progress(std::string_view label, float fraction, std::string_view detail) {
+  State& s = *state_;
+  if (!s.Here()) return;
+  s.rows->push_back({.label = std::string(label), .detail = std::string(detail), .progress = fraction});
+}
+
 void Menu::Back() {
   state_->back = true;
 }

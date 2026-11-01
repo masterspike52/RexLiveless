@@ -291,6 +291,10 @@ class Menu {
   void Header(std::string_view text);
   void Text(std::string_view text, Tone tone = Tone::kNormal);
   void Image(rex::ui::ImmediateTexture* texture, float aspect, float max_height = 360.0f);
+  // How far something has got: the label and detail over a bar, `fraction`
+  // (0..1) of it filled. Below 0, it's under way but how far isn't known, and
+  // a stripe sweeps along the bar.
+  void Progress(std::string_view label, float fraction, std::string_view detail = {});
   // Goes back a page once it's built; at the first, closes the window (or the
   // Guide).
   void Back();
