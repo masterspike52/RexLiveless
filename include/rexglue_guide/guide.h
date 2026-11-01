@@ -83,6 +83,9 @@ struct Config {
   // System Settings > Config saves the game's settings (cvars) here, as the
   // F4 settings overlay does; unset, changes there last until the game closes.
   std::filesystem::path config_file;
+  // Optional: saves the settings instead, for an app with a config writer of its own. The SDK's
+  // rex::cvar::SaveConfig writes strings unescaped, so a Windows path in any setting breaks the file.
+  std::function<void()> save_settings;
   // Optional: whether Config lists a setting, by cvar name (e.g. to leave out
   // ones the app hides). Unset: all of them but console commands.
   std::function<bool(std::string_view name)> show_setting;

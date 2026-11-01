@@ -164,7 +164,11 @@ void GuideDialog::SaveSettings() {
 void GuideDialog::FlushSettings(bool now) {
   if (!settings_dirty_ || (!now && (time_ - settings_changed_at_ < 0.5f || list_.dragging_slider >= 0))) return;
   settings_dirty_ = false;
-  if (!config_.config_file.empty()) rex::cvar::SaveConfig(config_.config_file);
+  if (config_.save_settings) {
+    config_.save_settings();
+  } else if (!config_.config_file.empty()) {
+    rex::cvar::SaveConfig(config_.config_file);
+  }
 }
 
 }  // namespace rexglue_guide
