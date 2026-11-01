@@ -126,6 +126,16 @@ std::string GuideDialog::GamertagOf(uint64_t xuid) const {
   return sessions::HostGamertag(xuid);
 }
 
+// The title's sign-in prompt: player 1's sign-in screen, with the title told
+// the system UI is up until it closes.
+void GuideDialog::ShowTitleSignIn() {
+  if (screen_ == Screen::kClosed) OpenFor(0, -1);
+  if (screen_ != Screen::kSignIn) return;
+  if (!std::exchange(title_ui_, true)) {
+    if (auto* kernel = REX_KERNEL_STATE()) kernel->BroadcastNotification(kNotifySystemUi, 1);
+  }
+}
+
 void GuideDialog::ShowTitleGamercard(uint64_t xuid) {
   if (screen_ == Screen::kClosed) {
     // The title's request is player 1's.

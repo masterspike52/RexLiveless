@@ -90,12 +90,13 @@ ImU32 WithAlpha(ImU32 col, float alpha) {
 }
 
 ImVec2 Measure(ImFont* font, float size, std::string_view text) {
-  font = Pick(font ? font : ImGui::GetFont(), size);
+  // Never ImGui::GetFont(): that is the host's default (e.g. a recomp's own UI font).
+  font = Pick(font ? font : Regular(), size);
   return font->CalcTextSizeA(size, FLT_MAX, 0.0f, text.data(), text.data() + text.size());
 }
 
 void Text(ImDrawList* dl, ImFont* font, float size, ImVec2 pos, ImU32 col, std::string_view text) {
-  font = Pick(font ? font : ImGui::GetFont(), size);
+  font = Pick(font ? font : Regular(), size);
   dl->AddText(font, size, ImVec2(std::floor(pos.x), std::floor(pos.y)), col, text.data(),
               text.data() + text.size());
 }

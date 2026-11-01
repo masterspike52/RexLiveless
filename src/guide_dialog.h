@@ -105,6 +105,7 @@ class GuideDialog final : public rex::ui::ImGuiDialog {
   // closes it), and the title hears system UI is up until it closes, as it
   // would on a console.
   void ShowTitleGamercard(uint64_t xuid);
+  void ShowTitleSignIn();
   void AddFriend();
   void AnswerRequest(const std::string& gamertag);
   void OpenNotification(const Notification& n);

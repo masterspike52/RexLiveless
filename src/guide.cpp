@@ -39,6 +39,7 @@ namespace {
 // The XUID of the gamer card a title asked for (XShowGamerCardUI), until the
 // Guide opens on it; 0 for none.
 std::atomic<uint64_t> g_gamercard_request{0};
+std::atomic<bool> g_signin_request{false};
 
 // Titles' text entry (XamShowKeyboardUI) waiting for the on-screen keyboard.
 std::mutex g_title_keyboard_mutex;
@@ -223,6 +224,7 @@ void GuideDialog::OnDraw(ImGuiIO& io) {
     }
   }
   if (const uint64_t xuid = g_gamercard_request.exchange(0)) ShowTitleGamercard(xuid);
+  if (g_signin_request.exchange(false)) ShowTitleSignIn();
 
   if (screen_ != Screen::kClosed) {
     open_t_ = closing_ ? std::max(0.0f, open_t_ - dt / 0.14f) : std::min(1.0f, open_t_ + dt / 0.18f);
@@ -264,7 +266,7 @@ void GuideDialog::Startup() {
       if (r.ok) SignedInToast();
       else OpenSignIn();
     });
-  } else {
+  } else if (!config_.sign_in_at_startup || config_.sign_in_at_startup()) {
     OpenSignIn();
   }
 }
@@ -453,6 +455,10 @@ bool SignedIn(int user) {
 
 void live::RequestGamercard(uint64_t xuid) {
   g_gamercard_request = xuid;
+}
+
+void live::RequestSignIn() {
+  g_signin_request = true;
 }
 
 const std::string& live::Build() {

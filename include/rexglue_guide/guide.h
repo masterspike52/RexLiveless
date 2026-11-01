@@ -60,6 +60,10 @@ struct Config {
   std::function<void()> on_quit;
   // The sign-in screen waits for this at startup, e.g. until a launcher closes.
   std::function<bool()> ready_for_sign_in;
+  // Optional: whether the sign-in screen opens by itself at startup when no
+  // account is remembered. Unset: it does. Either way the Guide button and the
+  // title's own sign-in prompt open it.
+  std::function<bool()> sign_in_at_startup;
   // What the Guide's icons, gamerpics and achievement icons are uploaded
   // through: the app's ReXApp::immediate_drawer().
   rex::ui::ImmediateDrawer* immediate_drawer = nullptr;
