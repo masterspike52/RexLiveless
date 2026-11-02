@@ -171,6 +171,17 @@ extern "C" REX_FUNC(__imp__XamShowGamerCardUIForXUID) {
   SetResult(ctx, 0);
 }
 
+// XamShowSigninUI(unk, mask): the title's "sign in" prompt (the Leaderboards
+// logon page opens it). With no account signed in it opens the Guide's sign-in
+// screen, which tells the title the system UI is up and, once it closes, that
+// it's gone. The title's logon carries on from whatever the player did there.
+extern "C" REX_FUNC(__imp__XamShowSigninUI) {
+  if (rexglue_guide::live::Snapshot().signed_in) return CallOriginal("__imp__XamShowSigninUI", ctx, base);
+  GUIDE_TRACE("XamShowSigninUI");
+  rexglue_guide::live::RequestSignIn();
+  SetResult(ctx, 0);
+}
+
 // XamUserGetSigninState(user_index)
 extern "C" REX_FUNC(__imp__XamUserGetSigninState) {
   const auto s = UserSnapshot(ctx.r3.u32);
