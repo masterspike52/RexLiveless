@@ -80,6 +80,11 @@ struct Config {
   // (uv: u0, v0, u1, v1); nullptr when there's none. Set, the Guide blurs the
   // live game behind it; unset, it just darkens it.
   std::function<rex::ui::ImmediateTexture*(float uv[4])> game_frame;
+  // Optional, preferred over game_frame: the same frame already blurred by a
+  // Gaussian of `sigma` window pixels, by the app's renderer. The Guide then
+  // draws it once; blurring game_frame itself takes it up to 121 full-window
+  // copies a frame, which slower GPUs feel. Also gets uv as game_frame does.
+  std::function<rex::ui::ImmediateTexture*(float sigma, float uv[4])> blurred_game_frame;
   // System Settings > Config saves the game's settings (cvars) here, as the
   // F4 settings overlay does; unset, changes there last until the game closes.
   std::filesystem::path config_file;
